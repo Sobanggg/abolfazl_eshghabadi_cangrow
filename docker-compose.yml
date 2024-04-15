@@ -3,6 +3,7 @@ version: '3'
 services:
   nginx:
     image: nginx:latest
+    container_name: nginx_cangrow
     ports:
       - "80:80"
     volumes:
@@ -11,15 +12,16 @@ services:
       - wordpress1
       - wordpress2
     networks:
-      - cangrownet
+     - cangrownet
 
   wordpress1:
     image: wordpress:latest
+    container_name: wordpress1_cangrow
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: cangrow
-      WORDPRESS_DB_PASSWORD: 123
-      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME:  ${WORDPRESS_DB_NAME}
     volumes:
       - wordpress_data:/var/www/html
     depends_on:
@@ -29,25 +31,28 @@ services:
 
   wordpress2:
     image: wordpress:latest
+    container_name: wordpress2_cangrow
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: cangrow
-      WORDPRESS_DB_PASSWORD: 123
-      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME:  ${WORDPRESS_DB_NAME}
     volumes:
       - wordpress_data:/var/www/html
     depends_on:
       - db
+      - wordpress1
     networks:
       - cangrownet
 
   db:
     image: mariadb:latest
+    container_name: mariadb_cangrow
     environment:
-      MYSQL_ROOT_PASSWORD: 123
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: cangrow
-      MYSQL_PASSWORD: 123
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     networks:
