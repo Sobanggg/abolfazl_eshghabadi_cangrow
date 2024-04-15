@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx_cangrow
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - wordpress1
+      - wordpress2
+    networks:
+     - cangrownet
+
+  wordpress1:
+    image: wordpress:latest
+    container_name: wordpress1_cangrow
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME:  ${WORDPRESS_DB_NAME}
+    volumes:
+      - wordpress_data:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - cangrownet
+
+  wordpress2:
+    image: wordpress:latest
+    container_name: wordpress2_cangrow
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME:  ${WORDPRESS_DB_NAME}
+    volumes:
+      - wordpress_data:/var/www/html
+    depends_on:
+      - db
+      - wordpress1
+    networks:
+      - cangrownet
+
+  db:
+    image: mariadb:latest
+    container_name: mariadb_cangrow
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - cangrownet
+
+networks:
+  cangrownet:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/28
+
+volumes:
+  wordpress_data:
+  db_data:
+
