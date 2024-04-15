@@ -2,7 +2,7 @@
 SET @@GLOBAL.server_id = 1;
 
 -- فعال کردن binary logging با مشخص کردن مسیر و نام فایل
-SET @@GLOBAL.log_bin = '/var/lib/mysql/mariadb-bin';
+SET @@GLOBAL.log_bin = '/var/lib/mysql/mysql-bin';
 
 -- مشخص کردن دیتابیس‌هایی که باید تغییرات آن‌ها ثبت شود
 SET @@GLOBAL.binlog_do_db = 'wordpress';
@@ -15,5 +15,5 @@ CREATE USER 'replication_user'@'%' IDENTIFIED BY '123';
 GRANT REPLICATION SLAVE ON *.* TO 'replication_user'@'%';
 
 -- نمایش وضعیت master برای استفاده در slave
+FLUSH PRIVILEGES;
 SHOW MASTER STATUS;
-

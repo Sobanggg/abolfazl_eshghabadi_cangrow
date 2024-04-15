@@ -1,4 +1,4 @@
-version: '3'
+
 
 services:
   mariadb_master:
@@ -9,6 +9,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command: --server-id=1 --log-bin=mysql-bin --binlog-do-db=${MYSQL_DATABASE} --binlog-format=mixed
     volumes:
       - mariadb_master_data:/var/lib/mysql
       - ./masterdb:/docker-entrypoint-initdb.d
@@ -28,6 +29,7 @@ services:
       - mariadb_master
     volumes:
       - mariadb_replica_data:/var/lib/mysql
+      - ./replicadb:/docker-entrypoint-initdb.d
     networks:
       - cangrownet
 
@@ -38,6 +40,8 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./replicadb:/docker-entrypoint-initdb.d
+
     depends_on:
       - wordpress1
       - wordpress2
