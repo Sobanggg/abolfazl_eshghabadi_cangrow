@@ -40,7 +40,6 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./replicadb:/docker-entrypoint-initdb.d
 
     depends_on:
       - wordpress1
