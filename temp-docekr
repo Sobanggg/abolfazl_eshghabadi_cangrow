@@ -1,27 +1,6 @@
-version: '3'
+
 
 services:
-  proxysql:
-    image: proxysql/proxysql
-    container_name: proxysql_cangrow
-    ports:
-      - "6032:6032"
-      - "6033:6033"
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    volumes:
-      - ./proxysql/proxysql.cnf:/etc/proxysql/proxysql.cnf
-      - ./proxysql/initial.sh:/etc/proxysql/initial.sh
-    command: ["/bin/bash", "/etc/proxysql/initial.sh"]
-    depends_on:
-      - mariadb_master
-      - mariadb_replica
-      - nginx
-    networks:
-      - cangrownet
   mariadb_master:
     image: mariadb:latest
     container_name: master_cangrow

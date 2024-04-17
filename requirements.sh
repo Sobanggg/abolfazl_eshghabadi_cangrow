@@ -11,6 +11,7 @@ declare -A services=(
     [wordpress1_cangrow]="172.28.0.4"
     [wordpress2_cangrow]="172.28.0.5"
     [nginx_cangrow]="172.28.0.6"
+    [proxysql_cangrow]="172.28.0.7"
 )
 #add kardan ip ha be hosts va agar tekrari nabod
 for service in "${!services[@]}"; do
