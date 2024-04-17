@@ -1,10 +1,13 @@
 
 
-
-
-
 CREATE USER 'rep_cangrow'@'%' IDENTIFIED BY 'cangrow';
 GRANT REPLICATION SLAVE ON *.* TO 'rep_cangrow'@'%';
+
+
+CREATE USER 'monitor'@'%' IDENTIFIED BY 'monitor';
+GRANT SELECT, PROCESS ON *.* TO 'monitor'@'%';
+FLUSH PRIVILEGES;
+
 
 FLUSH PRIVILEGES;
 SHOW MASTER STATUS;

@@ -15,7 +15,6 @@ services:
     volumes:
       - ./proxysql/proxysql.cnf:/etc/proxysql/proxysql.cnf
       - ./proxysql/initial.sh:/etc/proxysql/initial.sh
-    command: ["/bin/bash", "/etc/proxysql/initial.sh"]
     depends_on:
       - mariadb_master
       - mariadb_replica

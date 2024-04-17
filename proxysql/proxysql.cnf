@@ -38,8 +38,8 @@ mysql_variables=
 # Define hostgroups
 mysql_servers =
 (
-    { address="172.28.0.2" , port=3306 , hostgroup=10 , max_connections=100 },
-    { address="172.28.0.3" , port=3306 , hostgroup=20 , max_connections=100 }
+    { address="master_cangrow" , port=3306 , hostgroup=10 , max_connections=100 },
+    { address="replica_cangrow" , port=3306 , hostgroup=20 , max_connections=100 }
 )
 
 # Define users
