@@ -1,5 +1,5 @@
-
 #!/bin/bash
+
 
 #masir host ro behesh midim
 HOSTS_FILE="/etc/hosts"
@@ -21,3 +21,19 @@ for service in "${!services[@]}"; do
 done
 
 echo "all ips added to $HOSTS_FILE "
+
+
+# Rane kardan docker-compose
+docker compose up -d
+
+# entezar baraye etminan az bala amadan tamam container ha
+echo "Waiting for proxysql_cangrow container  running..."
+while ! docker exec proxysql_cangrow /bin/bash -c "echo 'Proxysql is running'" &> /dev/null; do
+    sleep 1
+done
+
+
+# Ejra kardan initial.sh dar container proxysql_cangrow
+docker exec proxysql_cangrow /bin/bash /etc/proxysql/initial.sh
+
+echo "service proxysql is runnig "
