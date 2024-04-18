@@ -15,6 +15,7 @@ services:
     volumes:
       - ./proxysql/proxysql.cnf:/etc/proxysql/proxysql.cnf
       - ./proxysql/initial.sh:/etc/proxysql/initial.sh
+      - proxysql_data:/var/lib/proxysql
     depends_on:
       - mariadb_master
       - mariadb_replica
@@ -119,6 +120,10 @@ networks:
 
 volumes:
   wordpress_data:
+    name: wordpress_data
   mariadb_master_data:
+    name: mariadb_master_data
   mariadb_replica_data:
-
+    name: mariadb_replica_data
+  proxysql_data:
+    name: proxysql_data

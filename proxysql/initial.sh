@@ -1,8 +1,5 @@
 #!/bin/bash
 
-sleep 10
-
-
 mysql -u admin -padmin -h 127.0.0.1 -P 6032 --execute="
 INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (10, 'master_cangrow', 3306);
 INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (20, 'replica_cangrow', 3306);
