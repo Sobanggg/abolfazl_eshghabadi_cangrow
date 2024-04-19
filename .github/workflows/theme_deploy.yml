@@ -21,5 +21,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: './themes/'
-          server-dir: '/var/lib/docker/volumes/wordpress_data/_data/wp-content/themes/'
+          server-dir: '/home/debian/final-cangrow'
 
