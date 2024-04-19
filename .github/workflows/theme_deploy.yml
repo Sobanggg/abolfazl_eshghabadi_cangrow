@@ -14,14 +14,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Sync theme directory to server
-        uses: easingthemes/ssh-deploy@v4.1.8
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: '185.240.151.70'
-          REMOTE_PORT: '22'
-          REMOTE_USER: 'debian'
-          ARGS: '-avzr --delete'
-          SOURCE: 'themes/'
-          TARGET: '/var/lib/docker/volumes/wordpress_data/_data/wp-content/themes'
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        with:
+          server: 'ftp://185.240.151.70'
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: './themes/'
+          server-dir: '/var/lib/docker/volumes/wordpress_data/_data/wp-content/themes/'
 
