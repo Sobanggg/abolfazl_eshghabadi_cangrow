@@ -21,5 +21,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: './themes/'
-          server-dir: '/home/debian/final-cangrow'
+          server-dir: '/home/debian/final-cangrow/'
 
