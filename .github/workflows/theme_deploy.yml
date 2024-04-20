@@ -11,9 +11,12 @@ jobs:
     env:
       HTTP_PROXY: 'http://free.shecan.ir/dns-query'
       HTTPS_PROXY: 'https://free.shecan.ir/dns-query'
+      TOKEN: ${{ secrets.TOKEN }} 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.TOKEN }} 
 
       - name: Sync theme directory to server
         uses: easingthemes/ssh-deploy@v3
@@ -25,4 +28,3 @@ jobs:
           ARGS: '-avzr --delete'
           SOURCE: 'themes/'
           TARGET: '/var/lib/docker/volumes/wordpress_data/_data/wp-content/themes/'
-
