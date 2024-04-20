@@ -1,4 +1,4 @@
-name: Deploy WordPress Theme
+name: Deploy WordPress Theme with Custom DNS
 
 on:
   push:
@@ -8,27 +8,22 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    services:
-      dns:
-        image: cloudflare/cloudflared:latest
-        ports:
-          - 53:53/tcp
-          - 53:53/udp
-    env:
-      HTTP_PROXY: 'http://free.shecan.ir/dns-query'
-      HTTPS_PROXY: 'https://free.shecan.ir/dns-query'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up DNS over TLS
+      - name: Start DNS server
+        run: |
+          docker run --name my-dns-server -d -p 53:53/udp -p 53:53/tcp andyshinn/dnsmasq:2.78
+          docker exec my-dns-server dnsmasq --no-daemon --server=/mydomain.com/178.22.122.100
+
+      - name: Set custom DNS for the runner
         run: |
           echo "nameserver 127.0.0.1" | sudo tee /etc/resolv.conf > /dev/null
-          sudo cloudflared proxy-dns --upstream https://free.shecan.ir/dns-query
 
       - name: Sync theme directory to server
         uses: easingthemes/ssh-deploy@v3
-        env:
+        with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: '185.240.151.70'
           REMOTE_PORT: '22'
