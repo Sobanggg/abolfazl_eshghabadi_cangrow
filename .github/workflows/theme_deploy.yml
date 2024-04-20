@@ -1,4 +1,4 @@
-name: Test SSH Connection
+name: Deploy to Server via SSH
 
 on:
   push:
@@ -6,14 +6,18 @@ on:
       - main
 
 jobs:
-  test-ssh:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Test SSH connection
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} debian@185.240.151.70 "echo 'SSH connection successful!'"
+      - name: Checking out the repository
+        uses: actions/checkout@v2
+
+      - name: Deploying to server
+        uses: easingthemes/ssh-deploy@v2.1.5
         env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: '185.240.151.70'
           REMOTE_USER: 'debian'
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_PORT: '22'
+          ARGS: 'echo "SSH connection successful!"'
 
