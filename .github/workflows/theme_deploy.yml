@@ -9,8 +9,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      HTTP_PROXY: '185.212.60.62:80'
-      HTTPS_PROXY: '176.65.240.15:80'
+      HTTP_PROXY: 'http://176.65.240.15:80'
+      HTTPS_PROXY: 'http://176.65.240.15:80'
       TOKEN: ${{ secrets.TOKEN }} 
     steps:
       - name: Checkout repository
