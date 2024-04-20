@@ -1,4 +1,4 @@
-name: Deploy WordPress Theme with Custom DNS
+name: Manual SSH File Transfer
 
 on:
   push:
@@ -19,14 +19,12 @@ jobs:
           echo "nameserver 178.22.122.100" | sudo tee /etc/resolv.conf > /dev/null
           echo "nameserver 185.51.200.2" | sudo tee -a /etc/resolv.conf > /dev/null
 
-      - name: Sync theme directory to server
-        uses: easingthemes/ssh-deploy@v3
+      - name: Transfer files via SSH
+        run: |
+          scp -o StrictHostKeyChecking=no -r themes/ ${REMOTE_USER}@${REMOTE_HOST}:/path/to/wordpress/themes/
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: '185.240.151.70'
           REMOTE_PORT: '22'
           REMOTE_USER: 'debian'
-          ARGS: '-avzr --delete'
-          SOURCE: 'themes/'
-          TARGET: '/var/lib/docker/volumes/wordpress_data/_data/wp-content/themes/'
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
