@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Test SSH connection
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${REMOTE_USER}@${REMOTE_HOST} "echo 'SSH connection successful!'"
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} debian@185.240.151.70 "echo 'SSH connection successful!'"
         env:
           REMOTE_HOST: '185.240.151.70'
           REMOTE_USER: 'debian'
