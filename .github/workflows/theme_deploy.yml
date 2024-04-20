@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      HTTP_PROXY: 'http://free.shecan.ir/dns-query'
+      HTTPS_PROXY: 'https://free.shecan.ir/dns-query'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
