@@ -19,7 +19,7 @@ jobs:
 
       - name: Start DNS server
         run: |
-          docker run --name my-dns-server -d -p 178.22.122.100:53:53/udp -p <YOU-EXTERNAL-IP>:53:53/tcp andyshinn/dnsmasq:2.78
+          docker run --name my-dns-server -d -p 178.22.122.100:53:53/udp -p 178.22.122.100:53:53/tcp andyshinn/dnsmasq:2.78
           # Set up your custom DNS settings here
 
       - name: Set custom DNS for the runner
