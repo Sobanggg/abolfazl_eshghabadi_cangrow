@@ -8,15 +8,23 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    services:
+      dns:
+        image: cloudflare/cloudflared:latest
+        ports:
+          - 53:53/tcp
+          - 53:53/udp
     env:
-      HTTP_PROXY: 'http://85.9.87.26:8080'
-      HTTPS_PROXY: 'http://85.9.87.26:8080'
-      TOKEN: ${{ secrets.TOKEN }} 
+      HTTP_PROXY: 'http://free.shecan.ir/dns-query'
+      HTTPS_PROXY: 'https://free.shecan.ir/dns-query'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.TOKEN }} 
+
+      - name: Set up DNS over TLS
+        run: |
+          echo "nameserver 127.0.0.1" | sudo tee /etc/resolv.conf > /dev/null
+          sudo cloudflared proxy-dns --upstream https://free.shecan.ir/dns-query
 
       - name: Sync theme directory to server
         uses: easingthemes/ssh-deploy@v3
@@ -28,3 +36,4 @@ jobs:
           ARGS: '-avzr --delete'
           SOURCE: 'themes/'
           TARGET: '/var/lib/docker/volumes/wordpress_data/_data/wp-content/themes/'
+
