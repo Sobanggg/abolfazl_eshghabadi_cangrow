@@ -12,14 +12,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Stop and disable systemd-resolved
+        run: |
+          sudo systemctl stop systemd-resolved
+          sudo systemctl disable systemd-resolved
+
       - name: Start DNS server
         run: |
-          docker run --name my-dns-server -d -p 53:53/udp -p 53:53/tcp andyshinn/dnsmasq:2.78
-          docker exec my-dns-server dnsmasq --no-daemon --server=/mydomain.com/178.22.122.100
+          docker run --name my-dns-server -d -p 178.22.122.100:53:53/udp -p <YOU-EXTERNAL-IP>:53:53/tcp andyshinn/dnsmasq:2.78
+          # Set up your custom DNS settings here
 
       - name: Set custom DNS for the runner
         run: |
-          echo "nameserver 127.0.0.1" | sudo tee /etc/resolv.conf > /dev/null
+          echo "nameserver <YOU-EXTERNAL-IP>" | sudo tee /etc/resolv.conf > /dev/null
 
       - name: Sync theme directory to server
         uses: easingthemes/ssh-deploy@v3
