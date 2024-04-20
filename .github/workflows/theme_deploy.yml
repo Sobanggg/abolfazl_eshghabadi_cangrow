@@ -9,7 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      HTTPS_PROXY: 'https://dns.403.online/dns-query'
       TOKEN: ${{ secrets.TOKEN }} 
     steps:
       - name: Checkout repository
