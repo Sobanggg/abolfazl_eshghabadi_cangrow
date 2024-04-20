@@ -14,14 +14,10 @@ jobs:
         with:
           token: ${{ secrets.TOKEN }}
 
-      - name: Start custom DNS server
+      - name: Set custom DNS in resolv.conf
         run: |
-          sudo docker run --name custom-dns-server -d -p 53:53/udp -p 53:53/tcp andyshinn/dnsmasq:2.78
-          sudo docker exec custom-dns-server dnsmasq --no-daemon --server=178.22.122.100 --server=185.51.200.2
-
-      - name: Set custom DNS for the runner
-        run: |
-          echo "nameserver 127.0.0.1" | sudo tee /etc/resolv.conf > /dev/null
+          echo "nameserver 178.22.122.100" | sudo tee /etc/resolv.conf > /dev/null
+          echo "nameserver 185.51.200.2" | sudo tee -a /etc/resolv.conf > /dev/null
 
       - name: Sync theme directory to server
         uses: easingthemes/ssh-deploy@v3
