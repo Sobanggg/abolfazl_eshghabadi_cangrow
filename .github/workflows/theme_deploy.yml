@@ -9,6 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
+      HTTPS_PROXY: 'https://free.shecan.ir/dns-query'
       TOKEN: ${{ secrets.TOKEN }} 
     steps:
       - name: Checkout repository
