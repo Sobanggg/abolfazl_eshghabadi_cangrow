@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'themes/**'
 
 jobs:
   deploy:
@@ -16,10 +18,10 @@ jobs:
         uses: easingthemes/ssh-deploy@v3
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: '185.240.151.70'
-          REMOTE_PORT: '22'
-          REMOTE_USER: 'debian'
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
           ARGS: '-avzr --delete --rsync-path="sudo rsync"'
           SOURCE: 'themes/'
-          TARGET: '/var/lib/docker/volumes/wordpress_data/_data/wp-content/themes/'
+          TARGET: ${{ secrets.TARGET }}
 
