@@ -9,13 +9,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      TOKEN: ${{ secrets.TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.TOKEN }}
+
 
       - name: Sync theme directory to server
         uses: easingthemes/ssh-deploy@v3
