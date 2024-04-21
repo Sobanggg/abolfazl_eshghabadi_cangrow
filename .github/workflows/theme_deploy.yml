@@ -1,4 +1,3 @@
-
 name: Deploy WordPress Theme
 
 on:
@@ -13,7 +12,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-
       - name: Sync theme directory to server
         uses: easingthemes/ssh-deploy@v3
         env:
@@ -21,6 +19,7 @@ jobs:
           REMOTE_HOST: '185.240.151.70'
           REMOTE_PORT: '22'
           REMOTE_USER: 'debian'
-          ARGS: '-avzr --delete'
+          ARGS: '-avzr --delete --rsync-path="sudo rsync"'
           SOURCE: 'themes/'
-          TARGET: '/home/debian/theme/'
+          TARGET: '/var/lib/docker/volumes/wordpress_data/_data/wp-content/themes/'
+
