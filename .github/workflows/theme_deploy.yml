@@ -23,4 +23,4 @@ jobs:
           REMOTE_USER: 'debian'
           ARGS: '-avzr --delete'
           SOURCE: 'themes/'
-          TARGET: '/var/lib/docker/volumes/wordpress_data/_data/wp-content/themes/'
+          TARGET: '/home/debian/theme/'
