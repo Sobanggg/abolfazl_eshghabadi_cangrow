@@ -35,32 +35,4 @@ mysql_variables=
     monitor_reader_only_nodes=true
 }
 
-# Define hostgroups
-mysql_servers =
-(
-    { address="master_cangrow" , port=3306 , hostgroup=10 , max_connections=100 },
-    { address="replica_cangrow" , port=3306 , hostgroup=20 , max_connections=100 }
-)
 
-# Define users
-mysql_users =
-(
-    { username = "cangrow", password = "123", default_hostgroup = 10, active = 1 }
-)
-
-# Define query rules
-mysql_query_rules =
-(
-    { rule_id=100, active=1, match_pattern="^SELECT", destination_hostgroup=20, apply=1 },
-    { rule_id=200, active=1, match_pattern="^INSERT|^UPDATE|^DELETE", destination_hostgroup=10, apply=1 }
-)
-
-# Load to runtime
-LOAD MYSQL SERVERS TO RUNTIME;
-LOAD MYSQL USERS TO RUNTIME;
-LOAD MYSQL QUERY RULES TO RUNTIME;
-
-# Save to disk
-SAVE MYSQL SERVERS TO DISK;
-SAVE MYSQL USERS TO DISK;
-SAVE MYSQL QUERY RULES TO DISK;

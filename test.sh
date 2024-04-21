@@ -6,59 +6,15 @@ HOSTS_FILE="/etc/hosts"
 while true; do
     source .env
     clear
-    echo -e "1.start cangrow-web \n2.stop cangrow-web \n3.WordPress user authentication \n4.clear cangrow-web \n5.show wordpress path \n6.show replica status \n7.show master status \n8.show proxysql status \n9.help \n10.exit"
+    echo -e "1.start cangrow-web \n2.stop cangrow-web \n3.WordPress user authentication \n4.clear cangrow-web \n5.help \n6.exit"
     read -p "select the option:  " VAR1
     VAR1=$(echo $VAR1 | tr -d [:alpha:] | tr -d [:blank:])
 
     case $VAR1 in
         1)
             clear
+            docker compose up -d
             if [ "$startup_config" == "0" ]; then
-                echo "installing docker "
-                sudo apt-get update
-                sudo apt-get install ca-certificates curl
-                sudo install -m 0755 -d /etc/apt/keyrings
-                sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-                sudo chmod a+r /etc/apt/keyrings/docker.asc
-                echo \
-                "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-                $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-                sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-                sudo apt-get update
-                sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-                # اجرای تست hello-world
-                if sudo docker run hello-world; then
-                    echo "Docker installed and tested successfully."
-                else
-                    echo "error installing docker "
-                    read -p ""
-                    exit 1
-                fi
-                 sudo apt-get install docker-compose
-
-                # Docker Compose
-                if docker-compose --version; then
-                    echo "Docker Compose  installed successfully."
-                else
-                    echo "error installing docker compose"
-                    read -p ""
-                    exit 1
-                fi
-                # نصب MySQL Client
-                sudo apt-get install mysql-client
-
-                # تست نصب MySQL Client
-                if mysql --version; then
-                    echo "MySQL Client has been installed successfully."
-                else
-                    echo "There was an issue installing MySQL Client."
-                    read -p ""
-                    exit 1
-                fi
-
-                        docker compose up -d
-
                 echo "Waiting for proxysql_cangrow container running..."
                 while ! docker exec proxysql_cangrow /bin/bash -c "echo 'Proxysql is running'" &> /dev/null; do
                     sleep 1
@@ -127,51 +83,17 @@ while true; do
             read -p ""
             ;;
         5)
-           clear
-            echo `docker volume inspect wordpress_data | awk '/Mountpoint/ {print $2}' | sed 's/[",]//g'`
-           read -p ""
-            ;;
-
-
-     
+        clear
+        echo -e "1:started and run startup config for cangrow-web \n2.stopped cangrow web and not remove data \n3.WordPress user authentication for To access the dashboard wordpress \n4.remove all volume and data for cangrow-web \n\n"
+        echo "Press Enter to continue..."
+        read -p ""
+        ;;
         6)
-        clear 
-        mysql -u root -h replica_cangrow -p123 -e "SHOW SLAVE STATUS\G"
-        read -p ""
-        ;;
-
-
-
-        7)
-         clear 
-        mysql -u root -h master_cangrow -p123 -e "SHOW MASTER STATUS;"
-        read -p ""
-        ;;
-     
-        8)
-         clear 
-        docker exec -it proxysql_cangrow bash -c "
-        mysql -u admin -padmin -h 127.0.0.1 -P 6032 --prompt='ProxySQLAdmin> ' -e '
-        SELECT * FROM mysql_users;
-        SELECT * FROM mysql_servers;
-        '"
-          read -p ""
-        ;;
-
-        9)
-            clear
-          echo -e "1:started and run startup config for cangrow-web \n2.stopped cangrow web and not remove data \n3.WordPress user authentication for To access the dashboard wordpress \n4.remove all volume and data for cangrow-web \n5.show path volume wordpress \n6.show status connection in replica db \n7.show status connection in master db \n8.show status connection in proxysql \n\n"
-          echo "Press Enter to continue..."
-          read -p ""
-          ;;
-
-        10)
             echo "Good luck ..."
             sleep 2
             clear
             break
             ;;
-        
 
         *)
             echo "Invalid option, please try again."
