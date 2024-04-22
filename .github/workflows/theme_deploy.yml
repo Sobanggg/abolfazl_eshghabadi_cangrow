@@ -23,5 +23,5 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           ARGS: '-avzr --delete --rsync-path="sudo rsync"'
           SOURCE: 'themes/'
-          TARGET: ${{ secrets.TARGET }}
+          TARGET: '/var/lib/docker/volumes/wordpress_data/_data/wp-content/themes/'
 
