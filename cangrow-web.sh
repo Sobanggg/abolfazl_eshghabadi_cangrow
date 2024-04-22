@@ -92,6 +92,7 @@ while true; do
             else
                 echo "startup config are available"
             fi
+	    docker compose up -d 
             echo "cangrow-web running..."
              echo "Press Enter to continue..."
             read -p ""
