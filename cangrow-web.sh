@@ -170,7 +170,7 @@ while true; do
 
         9)
             clear
-          echo -e "1:started and run startup config for cangrow-web \n2.stopped cangrow web and not remove data \n3.WordPress user authentication for To access the dashboard wordpress \n4.remove all volume and data for cangrow-web \n5.show path volume wordpress \n6.show status connection in replica db \n7.show status connection in master db \n8.show status connection in proxysql \n\n"
+          echo -e "1:started and run startup config for cangrow-web \n2.stopped cangrow web and not remove data \n3.WordPress user authentication for To access the dashboard wordpress \n4.remove all volume and data for cangrow-web \n5.show path volume wordpress \n6.show status connection in replica db \n7.show status connection in master db \n8.show status connection in proxysql \nuserWordpress:admin password:@cangrow#\n\n"
           echo "Press Enter to continue..."
           read -p ""
           ;;
