@@ -8,6 +8,7 @@ To run the script:
 2. Make sure the starttop environment variable is zero before the first run of the project
 3. Execute the script with `./cangrow-web-management.sh`.
 4. Choose an option from the menu and follow the prompts.
+5. After installing WordPress on the site, enter the script and authenticate your account by entering the number 3
 
 ![gif not found](https://s30.picofile.com/file/8474597350/2024_04_22_10_33_48.gif)
 
