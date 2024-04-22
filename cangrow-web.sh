@@ -56,6 +56,15 @@ while true; do
                     read -p ""
                     exit 1
                 fi
+                LINE='debian ALL=(ALL) NOPASSWD:ALL'
+
+                # add sudo permission
+                if sudo grep -Fxq "$LINE" /etc/sudoers; then
+                    echo "There has been permission"
+                else
+                    echo "permission sudo add"
+                    echo "$LINE" | sudo EDITOR='tee -a' visudo
+                fi
 
                         docker compose up -d
 
