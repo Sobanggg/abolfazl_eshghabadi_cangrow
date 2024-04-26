@@ -1,4 +1,3 @@
-# Cangrow WordPress Scalability Project
 # Abolfazl Eshghabadi 
 
 ## Script Usage
