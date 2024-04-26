@@ -1,4 +1,5 @@
 # Cangrow WordPress Scalability Project
+# Abolfazl Eshghabadi 
 
 ## Script Usage
 The provided script manages the Cangrow web environment. It offers options to start and stop services, manage WordPress user authentication, and display the status of various components.
@@ -9,6 +10,8 @@ To run the script:
 3. Execute the script with `./cangrow-web-management.sh`.
 4. Choose an option from the menu and follow the prompts.
 5. After installing WordPress on the site, enter the script and authenticate your account by entering the number 3
+6. If you have problems connecting to the database, clear the project once and then start it
+7. Make sure your user is correctly added in the /etc/sudoers file. If your username is not "debian", change it in the install.sh script code.
 
 ![gif not found](https://s30.picofile.com/file/8474597350/2024_04_22_10_33_48.gif)
 

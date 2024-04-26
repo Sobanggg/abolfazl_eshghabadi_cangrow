@@ -14,38 +14,8 @@ while true; do
         1)
             clear
             if [ "$startup_config" == "0" ]; then
-                echo "installing docker "
-                sudo apt-get update
-                sudo apt-get install ca-certificates curl
-                sudo install -m 0755 -d /etc/apt/keyrings
-                sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-                sudo chmod a+r /etc/apt/keyrings/docker.asc
-                echo \
-                "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-                $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-                sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-                sudo apt-get update
-                sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-                # اجرای تست hello-world
-                if sudo docker run hello-world; then
-                    echo "Docker installed and tested successfully."
-                else
-                    echo "error installing docker "
-                    read -p ""
-                    exit 1
-                fi
-                 sudo apt-get install docker-compose
-
-                # Docker Compose
-                if docker-compose --version; then
-                    echo "Docker Compose  installed successfully."
-                else
-                    echo "error installing docker compose"
-                    read -p ""
-                    exit 1
-                fi
                 # نصب MySQL Client
+                sudo apt-get update
                 sudo apt-get install mysql-client
 
                 # تست نصب MySQL Client
@@ -56,6 +26,7 @@ while true; do
                     read -p ""
                     exit 1
                 fi
+
                 LINE='debian ALL=(ALL) NOPASSWD:ALL'
 
                 # add sudo permission
@@ -66,13 +37,7 @@ while true; do
                     echo "$LINE" | sudo EDITOR='tee -a' visudo
                 fi
 
-                        docker compose up -d
-
-                echo "Waiting for proxysql_cangrow container running..."
-                while ! docker exec proxysql_cangrow /bin/bash -c "echo 'Proxysql is running'" &> /dev/null; do
-                    sleep 1
-                done
-                docker exec proxysql_cangrow /bin/bash /etc/proxysql/initial.sh
+                # تعریف آدرس‌های IP برای سرویس‌ها
                 declare -A services=(
                     [master_cangrow]="172.28.0.2"
                     [replica_cangrow]="172.28.0.3"
@@ -81,21 +46,34 @@ while true; do
                     [nginx_cangrow]="172.28.0.6"
                     [proxysql_cangrow]="172.28.0.7"
                 )
+
+                # اضافه کردن آدرس‌های IP به فایل hosts
                 for service in "${!services[@]}"; do
                     if ! grep -q "${services[$service]} $service" "$HOSTS_FILE"; then
                         echo "${services[$service]} $service" | sudo tee -a "$HOSTS_FILE" > /dev/null
                     fi
                 done
                 echo "all ips added to $HOSTS_FILE"
-                echo "startup config complete"
-                sed -i 's/startup_config=0/startup_config=1/' .env
             else
                 echo "startup config are available"
             fi
-	    docker compose up -d 
+
+            docker compose up -d
+
+            echo "Waiting for proxysql_cangrow container running..."
+            if [ "$startup_config" == "0" ]; then
+                while ! docker exec proxysql_cangrow /bin/bash -c "echo 'Proxysql is running'" &> /dev/null; do
+                    sleep 1
+                done
+                docker exec proxysql_cangrow /bin/bash /etc/proxysql/initial.sh
+                echo "startup config complete"
+                sed -i 's/startup_config=0/startup_config=1/' .env
+            fi
+
             echo "cangrow-web running..."
-             echo "Press Enter to continue..."
+            echo "Press Enter to continue..."
             read -p ""
+
             ;;
         2)
             clear
@@ -189,4 +167,5 @@ while true; do
             ;;
     esac
 done
+
 
